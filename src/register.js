@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { AWW_COMMAND, INVITE_COMMAND } from './commands.js';
 import dotenv from 'dotenv';
 import process from 'node:process';
@@ -12,6 +13,10 @@ dotenv.config({ path: '.dev.vars' });
 
 const token = process.env.DISCORD_TOKEN;
 const applicationId = process.env.DISCORD_APPLICATION_ID;
+const postmanUrl = process.env.POSTMAN_MOCK_API;
+const guildId = process.env.DISCORD_GUILD_ID;
+
+console.log(JSON.stringify([AWW_COMMAND, INVITE_COMMAND]));
 
 if (!token) {
   throw new Error('The DISCORD_TOKEN environment variable is required.');
@@ -26,7 +31,9 @@ if (!applicationId) {
  * Register all commands globally.  This can take o(minutes), so wait until
  * you're sure these are the commands you want.
  */
-const url = `https://discord.com/api/v10/applications/${applicationId}/commands`;
+const url_api = `https://discord.com/api/v10/applications/${applicationId}`;
+const url = url_api + `/commands`;
+const url_postman = `${postmanUrl}/commands`;
 
 const response = await fetch(url, {
   headers: {
