@@ -1,22 +1,14 @@
 /* eslint-disable no-unused-vars */
-import { AWW_COMMAND, INVITE_COMMAND } from './commands.js';
+import { AWW_COMMAND, INVITE_COMMAND, MESSAGES_COMMAND } from './commands.js';
 import dotenv from 'dotenv';
 import process from 'node:process';
 
-/**
- * This file is meant to be run from the command line, and is not used by the
- * application server.  It's allowed to use node.js primitives, and only needs
- * to be run once.
- */
-
+// get secrets from .env
 dotenv.config({ path: '.dev.vars' });
-
 const token = process.env.DISCORD_TOKEN;
 const applicationId = process.env.DISCORD_APPLICATION_ID;
 const postmanUrl = process.env.POSTMAN_MOCK_API;
 const guildId = process.env.DISCORD_GUILD_ID;
-
-console.log(JSON.stringify([AWW_COMMAND, INVITE_COMMAND]));
 
 if (!token) {
   throw new Error('The DISCORD_TOKEN environment variable is required.');
@@ -26,6 +18,12 @@ if (!applicationId) {
     'The DISCORD_APPLICATION_ID environment variable is required.',
   );
 }
+
+const commands = JSON.stringify([
+  AWW_COMMAND,
+  INVITE_COMMAND,
+  MESSAGES_COMMAND,
+]);
 
 /**
  * Register all commands globally.  This can take o(minutes), so wait until
@@ -41,7 +39,7 @@ const response = await fetch(url, {
     Authorization: `Bot ${token}`,
   },
   method: 'PUT',
-  body: JSON.stringify([AWW_COMMAND, INVITE_COMMAND]),
+  body: commands,
 });
 
 if (response.ok) {

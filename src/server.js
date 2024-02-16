@@ -8,7 +8,7 @@ import {
   InteractionType,
   verifyKey,
 } from 'discord-interactions';
-import { AWW_COMMAND, INVITE_COMMAND } from './commands.js';
+import { AWW_COMMAND, INVITE_COMMAND, MESSAGES_COMMAND } from './commands.js';
 import { getCuteUrl } from './reddit.js';
 import { InteractionResponseFlags } from 'discord-interactions';
 
@@ -25,6 +25,7 @@ class JsonResponse extends Response {
 }
 
 const router = Router();
+const api_url = 'https://discord.com/api/v10';
 
 /**
  * A simple :wave: hello page to verify the worker is working.
@@ -58,6 +59,7 @@ router.post('/', async (request, env) => {
   if (interaction.type === InteractionType.APPLICATION_COMMAND) {
     // Most user commands will come as `APPLICATION_COMMAND`.
     switch (interaction.data.name.toLowerCase()) {
+      // /aww
       case AWW_COMMAND.name.toLowerCase(): {
         const cuteUrl = await getCuteUrl();
         return new JsonResponse({
@@ -67,6 +69,8 @@ router.post('/', async (request, env) => {
           },
         });
       }
+
+      // /invite
       case INVITE_COMMAND.name.toLowerCase(): {
         const applicationId = env.DISCORD_APPLICATION_ID;
         const INVITE_URL = `https://discord.com/oauth2/authorize?client_id=${applicationId}&scope=applications.commands`;
@@ -78,6 +82,21 @@ router.post('/', async (request, env) => {
           },
         });
       }
+
+      // /message
+      case MESSAGES_COMMAND.name.toLowerCase(): {
+        // interaction;
+        const cuteUrl = await getCuteUrl();
+        // const response = fetch(api_url + '/channels/');
+        return new JsonResponse({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: cuteUrl,
+          },
+        });
+      }
+
+      // case no matched route
       default:
         return new JsonResponse({ error: 'Unknown Type' }, { status: 400 });
     }
