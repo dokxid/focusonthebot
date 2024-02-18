@@ -17,7 +17,7 @@
     "publish": "wrangler deploy"
   },
   "keywords": [],
-  "author": "dokxid",
+  "author": "dokxid, littletsu",
   "license": "MIT",
   "dependencies": {
     "@discordjs/core": "^1.1.1",
