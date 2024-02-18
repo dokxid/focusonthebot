@@ -34,7 +34,7 @@ jobs:
         with:
           node-version: 18
       - run: npm install
-      - run: npm run register
+      - run: npm run register:staging
       - run: npm run publish:staging
         env:
           STG_DISCORD_APPLICATION_ID: ${{ secrets.STG_DISCORD_APPLICATION_ID }}
