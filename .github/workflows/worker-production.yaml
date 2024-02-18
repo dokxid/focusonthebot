@@ -1,10 +1,12 @@
+name: Deploy the prod worker on merges
+
 on:
   push:
     branches:
       - main
-  pull_request:
-name: ci
+      
 jobs:
+
   test:
     runs-on: ubuntu-latest
     steps:
@@ -14,6 +16,7 @@ jobs:
           node-version: 18
       - run: npm install
       - run: npm test
+
   lint:
     runs-on: ubuntu-latest
     steps:
@@ -23,6 +26,7 @@ jobs:
           node-version: 18
       - run: npm install
       - run: npm run lint
+      
   release:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
@@ -34,7 +38,7 @@ jobs:
           node-version: 18
       - run: npm install
       - run: npm run register
-      - run: npm run publish
+      - run: npm run publish:production
         env:
           CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
           CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
