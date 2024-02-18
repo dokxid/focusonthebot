@@ -1,0 +1,14 @@
+# rename this file from:
+# {wrangler.local.toml.example} to -> {wrangler.local.toml}
+# to run, use: wrangler dev -c wrangler.local.toml
+# or the npm script: yarn run 
+
+name = "focusonthebot-local"
+main = "./src/server.ts"
+compatibility_date="2023-05-18"
+
+# default vars
+vars = { ENVIRONMENT = "dev" }
+d1_databases = [
+  { binding = "DB", database_name = "local-focusonthebot", database_id = "13a4cfda-36f5-45d6-ac50-b0eff48454e4" }
+]

@@ -1,11 +1,26 @@
 name = "focusonthebot"
 main = "./src/server.ts"
 compatibility_date="2023-05-18"
-# [secrets]
-# DISCORD_TOKEN
-# DISCORD_PUBLIC_KEY
-# DISCORD_APPLICATION_ID
-[[d1_databases]]
-binding = "DB" # i.e. available in your Worker on env.DB
-database_name = "prod-focusonthebot"
-database_id = "13a4cfda-36f5-45d6-ac50-b0eff48454e4"
+
+# default vars
+[env.production]
+vars = { ENVIRONMENT = "production" }
+d1_databases = [
+  { binding = "DB", database_name = "focusonthebot-production", database_id = "4acdde17-dc1a-4d24-ae2b-ee29e94c8e2e" }
+]
+
+# staging vars override, not set yet, TODO, see 
+[env.staging]
+vars = { ENVIRONMENT = "staging" }
+name = "focusonthebot-staging"
+d1_databases = [
+  { binding = "DB", database_name = "focusonthebot-staging", database_id = "1cf5173c-b4bd-4801-abde-879199b1e534" }
+]
+
+# development vars override (just use wrangler.local.toml, less of a headache q_q)
+[env.dev]
+vars = { ENVIRONMENT = "dev" }
+name = "mypotatobot"
+d1_databases = [
+  { binding = "DB", database_name = "<db_name>", database_id = "<db_id>" }
+]

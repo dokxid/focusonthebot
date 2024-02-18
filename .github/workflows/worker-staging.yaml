@@ -1,10 +1,9 @@
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-name: ci
+
+name: Deploy the staging worker on pull requests
+on: pull_request
+
 jobs:
+  
   test:
     runs-on: ubuntu-latest
     steps:
@@ -14,6 +13,7 @@ jobs:
           node-version: 18
       - run: npm install
       - run: npm test
+
   lint:
     runs-on: ubuntu-latest
     steps:
@@ -23,8 +23,9 @@ jobs:
           node-version: 18
       - run: npm install
       - run: npm run lint
-  release:
-    if: github.ref == 'refs/heads/main'
+
+  deploy:
+    if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
     runs-on: ubuntu-latest
     needs: [test, lint]
     steps:
@@ -33,7 +34,11 @@ jobs:
         with:
           node-version: 18
       - run: npm install
-      - run: npm run publish
+      - run: npm run register:staging
+        env:
+          STG_DISCORD_APPLICATION_ID: ${{ secrets.STG_DISCORD_APPLICATION_ID }}
+          STG_DISCORD_TOKEN: ${{ secrets.STG_DISCORD_TOKEN }}
+      - run: npm run publish:staging
         env:
           CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
           CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
