@@ -1,4 +1,10 @@
+# ignore modules
 node_modules
+
+# ignore test coverage files
 coverage
+
+# ignore local wrangler configurations / needed env variables
+wrangler.local.toml
 .dev.vars
 .wrangler
