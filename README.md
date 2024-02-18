@@ -1,47 +1,21 @@
-# Cloudflare worker example app
+# focusonthebot
 
-awwbot is an example app that brings the cuteness of `r/aww` straight to your Discord server, hosted on Cloudflare workers. Cloudflare Workers are a convenient way to host Discord bots due to the free tier, simple development model, and automatically managed environment (no VMs!).
 
-The tutorial for building awwbot is [in the developer documentation](https://discord.com/developers/docs/tutorials/hosting-on-cloudflare-workers)
-
-![awwbot in action](https://user-images.githubusercontent.com/534619/157503404-a6c79d1b-f0d0-40c2-93cb-164f9df7c138.gif)
 
 ## Resources used
 
 - [Discord Interactions API](https://discord.com/developers/docs/interactions/receiving-and-responding)
 - [Cloudflare Workers](https://workers.cloudflare.com/) for hosting
-- [Reddit API](https://www.reddit.com/dev/api/) to send messages back to the user
-
----
-
-## Project structure
-
-Below is a basic overview of the project structure:
-
-```
-├── .github/workflows/ci.yaml -> Github Action configuration
-├── src
-│   ├── commands.js           -> JSON payloads for commands
-│   ├── reddit.js             -> Interactions with the Reddit API
-│   ├── register.js           -> Sets up commands with the Discord API
-│   ├── server.js             -> Discord app logic and routing
-├── test
-|   ├── test.js               -> Tests for app
-├── wrangler.toml             -> Configuration for Cloudflare workers
-├── package.json
-├── README.md
-├── .eslintrc.json
-├── .prettierignore
-├── .prettierrc.json
-└── .gitignore
-```
+- [Discord Cloudfare Sample App](https://github.com/discord/cloudflare-sample-app)
 
 ## Configuring project
 
 Before starting, you'll need a [Discord app](https://discord.com/developers/applications) with the following permissions:
 
 - `bot` with the `Send Messages` and `Use Slash Command` permissions
+- `Read Messages`, `Send Messages` and **`View Message History`** permissions for the channels that are going to be enabled
 - `applications.commands` scope
+- Message Content Intent (added on bot app settings)
 
 > ⚙️ Permissions can be configured by clicking on the `OAuth2` tab and using the `URL Generator`. After a URL is generated, you can install the app by pasting that URL into your browser and following the installation flow.
 
@@ -57,14 +31,21 @@ Next, you'll need to create a Cloudflare Worker.
 First clone the project:
 
 ```
-git clone https://github.com/discord/cloudflare-sample-app.git
+git clone https://github.com/dokxid/focusonthebot.git
 ```
 
 Then navigate to its directory and install dependencies:
 
 ```
-cd cloudflare-sample-app
-npm install
+cd focusonthebot
+yarn install
+```
+
+# create and init d1 db
+```sh
+npx wrangler d1 create prod-focusonthebot
+# this drops previous tables if they exist, only run once
+npx wrangler d1 execute prod-focusonthebot --file=./schema.sql
 ```
 
 > ⚙️ The dependencies in this project require at least v18 of [Node.js](https://nodejs.org/en/)
