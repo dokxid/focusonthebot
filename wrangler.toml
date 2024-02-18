@@ -8,4 +8,4 @@ compatibility_date="2023-05-18"
 [[d1_databases]]
 binding = "DB" # i.e. available in your Worker on env.DB
 database_name = "prod-focusonthebot"
-database_id = "c7fc1e3e-2be5-4fbc-9d10-2a6116c7aa3f"
+database_id = "13a4cfda-36f5-45d6-ac50-b0eff48454e4"
