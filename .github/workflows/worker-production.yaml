@@ -40,5 +40,7 @@ jobs:
       - run: npm run register
       - run: npm run publish:production
         env:
+          PROD_DISCORD_APPLICATION_ID: ${{ secrets.PROD_DISCORD_APPLICATION_ID }}
+          PROD_DISCORD_TOKEN: ${{ secrets.PROD_DISCORD_TOKEN }}
           CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
           CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
