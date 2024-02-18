@@ -35,9 +35,10 @@ jobs:
           node-version: 18
       - run: npm install
       - run: npm run register:staging
-      - run: npm run publish:staging
         env:
           STG_DISCORD_APPLICATION_ID: ${{ secrets.STG_DISCORD_APPLICATION_ID }}
           STG_DISCORD_TOKEN: ${{ secrets.STG_DISCORD_TOKEN }}
+      - run: npm run publish:staging
+        env:
           CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
           CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}

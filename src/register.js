@@ -4,7 +4,6 @@ import process from 'node:process';
 
 // load .dev.vars
 var args = process.argv.slice(2);
-const DEBUG = args.includes('debug');
 console.log(args[0] ? `detected argument: ${args}` : 'no args detected');
 dotenv.config({ path: '.dev.vars' });
 
@@ -62,8 +61,8 @@ const response = await fetch(url, {
 
 if (response.ok) {
   console.log('Registered all commands');
-  const data = await response.json();
-  console.log(JSON.stringify(data, null, 2));
+  // const data = await response.json();
+  // console.log(JSON.stringify(data, null, 2));
 } else {
   console.error('Error registering commands');
   let errorText = `Error registering commands \n ${response.url}: ${response.status} ${response.statusText}`;
