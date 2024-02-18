@@ -6,9 +6,10 @@
   "private": true,
   "main": "src/server.js",
   "scripts": {
-    "start": "node src/server.js",
-    "dev:production": "wrangler dev",
+    "dev:production": "wrangler dev -e production",
+    "dev:staging": "wrangler dev -e staging",
     "dev": "wrangler dev -c wrangler.local.toml",
+    "start": "node src/server.js",
     "ngrok": "ngrok http 8787",
     "test": "c8 mocha test",
     "fix": "eslint --fix '**/*.js'",
