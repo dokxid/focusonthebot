@@ -1,12 +1,9 @@
-name: Deploy the prod worker on merges
 
-on:
-  push:
-    branches:
-      - main
-      
+name: Deploy the staging worker on pull requests
+on: pull_request
+
 jobs:
-
+  
   test:
     runs-on: ubuntu-latest
     steps:
@@ -26,9 +23,9 @@ jobs:
           node-version: 18
       - run: npm install
       - run: npm run lint
-      
-  release:
-    if: github.ref == 'refs/heads/main'
+
+  deploy:
+    if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
     runs-on: ubuntu-latest
     needs: [test, lint]
     steps:
@@ -38,7 +35,7 @@ jobs:
           node-version: 18
       - run: npm install
       - run: npm run register
-      - run: npm run publish:production
+      - run: npm run publish:staging
         env:
           CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
           CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
