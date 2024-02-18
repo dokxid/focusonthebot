@@ -14,8 +14,8 @@
     "fix": "eslint --fix '**/*.js'",
     "lint": "eslint '**/*.js'",
     "register": "node src/register.js",
-    "publish:production": "wrangler deploy",
-    "publish:staging": "wrangler deploy --env staging"
+    "publish:production": "wrangler deploy -e production",
+    "publish:staging": "wrangler deploy -e staging"
   },
   "keywords": [],
   "author": "dokxid",

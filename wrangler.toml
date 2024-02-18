@@ -3,7 +3,8 @@ main = "./src/server.ts"
 compatibility_date="2023-05-18"
 
 # default vars
-vars = { ENVIRONMENT = "prod" }
+[env.production]
+vars = { ENVIRONMENT = "production" }
 d1_databases = [
   { binding = "DB", database_name = "focusonthebot-production", database_id = "4acdde17-dc1a-4d24-ae2b-ee29e94c8e2e" }
 ]
