@@ -20,7 +20,7 @@ d1_databases = [
 # development vars override (just use wrangler.local.toml, less of a headache q_q)
 [env.dev]
 vars = { ENVIRONMENT = "dev" }
-name = "mypotatobot"
+name = "<worker_name>"
 d1_databases = [
   { binding = "DB", database_name = "<db_name>", database_id = "<db_id>" }
 ]

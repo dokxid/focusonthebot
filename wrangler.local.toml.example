@@ -3,12 +3,12 @@
 # to run, use: wrangler dev -c wrangler.local.toml
 # or the npm script: yarn run 
 
-name = "focusonthebot-local"
+name = "<worker_name>"
 main = "./src/server.ts"
 compatibility_date="2023-05-18"
 
 # default vars
 vars = { ENVIRONMENT = "dev" }
 d1_databases = [
-  { binding = "DB", database_name = "local-focusonthebot", database_id = "13a4cfda-36f5-45d6-ac50-b0eff48454e4" }
+  { binding = "DB", database_name = "<db_name>", database_id = "<db_id>" }
 ]

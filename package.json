@@ -4,7 +4,7 @@
   "description": "a simple bot called focusonthebot",
   "type": "module",
   "private": true,
-  "main": "src/server.js",
+  "main": "src/server.ts",
   "scripts": {
     "dev:production": "wrangler dev -e production",
     "dev:staging": "wrangler dev -e staging",
