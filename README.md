@@ -1,16 +1,18 @@
 # focusonthebot
 
-
-
 ## Resources used
 
-- [Discord Interactions API](https://discord.com/developers/docs/interactions/receiving-and-responding)
+- [Discord Interactions API](https://discord.com/developers/docs/interactions/receiving-and-responding) for the discord api
 - [Cloudflare Workers](https://workers.cloudflare.com/) for hosting
-- [Discord Cloudfare Sample App](https://github.com/discord/cloudflare-sample-app)
+- [Discord Cloudfare Sample App](https://github.com/discord/cloudflare-sample-app) for the template
 
-## Configuring project
+## prerequisites
 
-Before starting, you'll need a [Discord app](https://discord.com/developers/applications) with the following permissions:
+> note: ⚙️ The dependencies in this project require at least v18 of [Node.js](https://nodejs.org/en/)
+
+### create a discord bot
+
+Before starting, you'll need to create a [discord app](https://discord.com/developers/applications) with the following permissions:
 
 - `bot` with the `Send Messages` and `Use Slash Command` permissions
 - `Read Messages`, `Send Messages` and **`View Message History`** permissions for the channels that are going to be enabled
@@ -19,7 +21,7 @@ Before starting, you'll need a [Discord app](https://discord.com/developers/appl
 
 > ⚙️ Permissions can be configured by clicking on the `OAuth2` tab and using the `URL Generator`. After a URL is generated, you can install the app by pasting that URL into your browser and following the installation flow.
 
-## Creating your Cloudflare worker
+### creating your cloudflare worker
 
 Next, you'll need to create a Cloudflare Worker.
 
@@ -28,53 +30,37 @@ Next, you'll need to create a Cloudflare Worker.
 
 ## Running locally
 
-First clone the project:
+### setup environment
 
-```
+```sh
 git clone https://github.com/dokxid/focusonthebot.git
-```
-
-Then navigate to its directory and install dependencies:
-
-```
 cd focusonthebot
 yarn install
 ```
 
-# create and init d1 db
+### setup d1
+
 ```sh
-npx wrangler d1 create prod-focusonthebot
-# this drops previous tables if they exist, only run once
-npx wrangler d1 execute prod-focusonthebot --file=./schema.sql
+yarn exec wrangler login
+yarn exec wrangler d1 create <your-desired-db-name>
+yarn exec wrangler d1 execute <your-desired-db-name> --file=./schema.sql
 ```
 
-> ⚙️ The dependencies in this project require at least v18 of [Node.js](https://nodejs.org/en/)
+### configure for local development
 
-### Local configuration
-
-> 💡 More information about generating and fetching credentials can be found [in the tutorial](https://discord.com/developers/docs/tutorials/hosting-on-cloudflare-workers#storing-secrets)
+> **`.dev.vars` contains sensitive data so make sure it does not get checked into git**.
 
 Rename `example.dev.vars` to `.dev.vars`, and make sure to set each variable.
 
-**`.dev.vars` contains sensitive data so make sure it does not get checked into git**.
-
-### Register commands
+### register slash commands
 
 The following command only needs to be run once:
 
-```
-$ npm run register
-```
-
-### Run app
-
-Now you should be ready to start your server:
-
-```
-$ npm run dev
+```sh
+yarn exec run register
 ```
 
-### Setting up ngrok
+### OPTIONAL: setting up ngrok
 
 When a user types a slash command, Discord will send an HTTP request to a given endpoint. During local development this can be a little challenging, so we're going to use a tool called `ngrok` to create an HTTP tunnel.
 
@@ -90,37 +76,44 @@ This is going to bounce requests off of an external endpoint, and forward them t
 
 This is the process we'll use for local testing and development. When you've published your bot to Cloudflare, you will _want to update this field to use your Cloudflare Worker URL._
 
-## Deploying app
+### run app locally
+
+Now you should be ready to start your server:
+
+```sh
+yarn run dev
+```
+
+## deploying
+
+### about deploying
 
 This repository is set up to automatically deploy to Cloudflare Workers when new changes land on the `main` branch. To deploy manually, run `npm run publish`, which uses the `wrangler publish` command under the hood. Publishing via a GitHub Action requires obtaining an [API Token and your Account ID from Cloudflare](https://developers.cloudflare.com/workers/wrangler/cli-wrangler/authentication/#generate-tokens). These are stored [as secrets in the GitHub repository](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository), making them available to GitHub Actions. The following configuration in `.github/workflows/ci.yaml` demonstrates how to tie it all together:
 
-```yaml
-release:
-  if: github.ref == 'refs/heads/main'
-  runs-on: ubuntu-latest
-  needs: [test, lint]
-  steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-node@v3
-      with:
-        node-version: 18
-    - run: npm install
-    - run: npm run publish
-      env:
-        CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
-        CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
-```
+### storing secrets (cicd)
 
-### Storing secrets
+the credentials in `.dev.vars` are only applied locally. the deploy service needs access to credentials from your app:
 
-The credentials in `.dev.vars` are only applied locally. The production service needs access to credentials from your app:
+- go into the the repository of this / your fork
+- go to settings
+- go to security -> secrets and variables
+- go to actions
+- put in following variables
+ - CF_ACCOUNT_ID
+ - CF_API_TOKEN
+ - PROD_DISCORD_APPLICATION_ID
+ - PROD_DISCORD_TOKEN
+ - STG_DISCORD_APPLICATION_ID
+ - STG_DISCORD_TOKEN
+
+### storing secrets (manually)
+
+> note: deprecated
+
+the credentials in `.dev.vars` are only applied locally. the deploy service needs access to credentials from your app:
 
 ```
 $ wrangler secret put DISCORD_TOKEN
 $ wrangler secret put DISCORD_PUBLIC_KEY
 $ wrangler secret put DISCORD_APPLICATION_ID
 ```
-
-## Questions?
-
-Feel free to post an issue here, or reach out to [@justinbeckwith](https://twitter.com/JustinBeckwith)!
