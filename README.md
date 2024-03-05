@@ -50,13 +50,23 @@ yarn exec wrangler d1 execute <your-desired-db-name> --file=./schema.sql
 
 ### configure for local development
 
-> **`.dev.vars` contains sensitive data so make sure it does not get checked into git**.
+copy `example.dev.vars` to `.dev.vars`, and make sure to set each variable:
 
-Rename `example.dev.vars` to `.dev.vars`, and make sure to set each variable.
+```
+cp example.dev.vars .dev.vars
+```
+
+copy `wrangler.local.toml.example` to `wrangler.local.toml`, and make sure to set each variable:
+
+```
+cp wrangler.local.toml.example wrangler.local.toml
+```
+
+> **IMPORTANT NOTE: `.dev.vars` and `wrangler.local.toml` MAY contain sensitive data so make sure it does not get checked into git**.
 
 ### register slash commands
 
-The following command only needs to be run once:
+the following command only needs to be run once:
 
 ```sh
 yarn exec run register
