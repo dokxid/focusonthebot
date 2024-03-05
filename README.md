@@ -1,5 +1,7 @@
 # focusonthebot
 
+
+
 ## Resources used
 
 - [Discord Interactions API](https://discord.com/developers/docs/interactions/receiving-and-responding) for the discord api
